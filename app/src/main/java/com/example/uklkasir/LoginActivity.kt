@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.example.uklkasir.userdatabase.User
-import com.example.uklkasir.userdatabase.UserDatabase
 
 class LoginActivity : AppCompatActivity() {
     lateinit var editEmail: EditText

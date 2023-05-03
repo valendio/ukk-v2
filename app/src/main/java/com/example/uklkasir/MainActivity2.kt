@@ -1,5 +1,6 @@
 package com.example.uklkasir
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -33,6 +34,11 @@ class MainActivity2 : AppCompatActivity() {
         if(role != "Admin"){
             addButton.isEnabled = false
             addButton.visibility = View.INVISIBLE
+        }
+
+        addButton.setOnClickListener{
+            val moveIntent = Intent(this@MainActivity2, AddItemActivity::class.java)
+            startActivity(moveIntent)
         }
 
         itemDb = ItemDatabase.getInstance(applicationContext)

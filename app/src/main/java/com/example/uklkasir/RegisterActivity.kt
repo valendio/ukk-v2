@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
-import com.example.uklkasir.userdatabase.UserDatabase
 import com.example.uklkasir.userdatabase.User
 
 class RegisterActivity : AppCompatActivity() {
