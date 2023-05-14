@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.example.uklkasir.userdatabase.CafeDatabase
 import com.example.uklkasir.userdatabase.User
 
 class LoginActivity : AppCompatActivity() {
@@ -14,7 +15,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var loginButton: Button
     lateinit var registerButon: Button
 
-    lateinit var db: UserDatabase
+    lateinit var db: CafeDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,13 +24,15 @@ class LoginActivity : AppCompatActivity() {
         init()
         loginButton.setOnClickListener{
             if(editEmail.text.toString().isNotEmpty() && editPassword.text.toString().isNotEmpty()){
-                var list: List<User> = db.userDao().login(editEmail.text.toString(), editPassword.text.toString())
+                var list: List<User> = db.cafeDao().login(editEmail.text.toString(), editPassword.text.toString())
                 if(list.size > 0){
                     val moveIntent = Intent(this@LoginActivity, MainActivity2::class.java)
                     val name = list[0].nama
                     val role = list[0].role
+                    val id_user = list[0].id_user
                     moveIntent.putExtra("name", name)
                     moveIntent.putExtra("role", role)
+                    moveIntent.putExtra("id_user", id_user)
                     startActivity(moveIntent)
                 }
                 else{
@@ -49,6 +52,6 @@ class LoginActivity : AppCompatActivity() {
         loginButton = findViewById(R.id.buttonLogin)
         registerButon = findViewById(R.id.buttonRegister)
 
-        db = UserDatabase.getInstance(applicationContext)
+        db = CafeDatabase.getInstance(applicationContext)
     }
 }

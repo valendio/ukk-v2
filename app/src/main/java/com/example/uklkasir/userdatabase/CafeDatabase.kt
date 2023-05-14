@@ -1,9 +1,20 @@
 package com.example.uklkasir.userdatabase
 
 import android.content.Context
+import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
+@Database(
+    entities = [
+        DetailTransaksi::class,
+        Meja::class,
+        Menu::class,
+        Transaksi::class,
+        User::class
+    ],
+    version = 1
+)
 abstract class CafeDatabase: RoomDatabase() {
     abstract fun cafeDao(): CafeDao
 
@@ -12,7 +23,7 @@ abstract class CafeDatabase: RoomDatabase() {
 
         fun getInstance(context: Context): CafeDatabase{
             if(instance == null){
-                instance = Room.databaseBuilder(context, CafeDatabase::class.java, "user_db")
+                instance = Room.databaseBuilder(context, CafeDatabase::class.java, "cafe_db")
                     .fallbackToDestructiveMigration()
                     .allowMainThreadQueries()
                     .build()

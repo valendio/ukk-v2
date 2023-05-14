@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="PrimaryColor">#BA8A62</color>
     <color name="PrimaryColorVariant">#956F4F</color>
+    <color name="red">#A10404</color>
+    <color name="orange">#B65223</color>
 </resources>

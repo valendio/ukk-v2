@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
+import com.example.uklkasir.userdatabase.CafeDatabase
 import com.example.uklkasir.userdatabase.User
 
 class RegisterActivity : AppCompatActivity() {
@@ -16,7 +17,7 @@ class RegisterActivity : AppCompatActivity() {
     lateinit var buttonSave: Button
     lateinit var pilihRole: Spinner
 
-    lateinit var db: UserDatabase
+    lateinit var db: CafeDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +27,7 @@ class RegisterActivity : AppCompatActivity() {
         setDataSpinner()
         buttonSave.setOnClickListener{
             if(editName.text.toString().isNotEmpty() && editEmail.text.toString().isNotEmpty() && editPassword.text.toString().isNotEmpty()){
-                db.userDao().insert(User(
+                db.cafeDao().insertUser(User(
                     null,
                     editName.text.toString(),
                     editEmail.text.toString(),
@@ -46,7 +47,7 @@ class RegisterActivity : AppCompatActivity() {
         buttonSave = findViewById(R.id.buttonSave)
         pilihRole = findViewById(R.id.spinnerRole)
 
-        db = UserDatabase.getInstance(applicationContext)
+        db = CafeDatabase.getInstance(applicationContext)
     }
 
     private fun setDataSpinner(){

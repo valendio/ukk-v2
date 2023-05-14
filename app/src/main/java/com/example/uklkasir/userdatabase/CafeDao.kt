@@ -24,27 +24,41 @@ interface CafeDao {
     fun login(mEmail: String, mPass: String): List<User>
 
     @Query("SELECT * FROM Menu")
-    fun getAllMenu()
+    fun getAllMenu(): List<Menu>
 
     @Query("SELECT * FROM Transaksi")
-    fun getAllTransaksi()
+    fun getAllTransaksi(): List<Transaksi>
 
     @Query("SELECT * FROM Meja")
-    fun getAllMeja()
+    fun getAllMeja(): List<Meja>
 
-    @Transaction
-    @Query("SELECT * FROM Menu WHERE id_menu = :idMenu")
-    fun getMenuAndDetailTransaksiWithIdMenu(idMenu: Int): List<DetailTransaksiAndMenu>
-
-    @Transaction
     @Query("SELECT * FROM DetailTransaksi WHERE id_transaksi = :idTransaksi")
-    fun getDetailTransaksiAndTransaksiWithIdTransaksi(idTransaksi: Int): List<TransaksiAndDetailTransaksi>
+    fun getDetailTransaksifromTransaksi(idTransaksi: Int): List<DetailTransaksi>
 
-    @Transaction
-    @Query("SELECT * FROM Meja WHERE id_meja = :idMeja")
-    fun getMejaAndTransaksiWithIdMeja(idMeja: Int): List<MejaAndTransaksi>
+    @Query("SELECT * FROM Menu WHERE jenis = :jenisMenu")
+    fun getMenuFilterJenis(jenisMenu: String): List<Menu>
 
-    @Transaction
-    @Query("SELECT * FROM User WHERE id_user = :idUser")
-    fun getUserAndTransaksiWithIdUser(idUser: Int): List<UserAndTransaksi>
+    @Delete
+    fun deleteMenu(menu: Menu)
+
+    @Query("UPDATE Menu SET nama_menu = :namaMenu, jenis = :Jenis, harga = :Harga WHERE id_menu = :id")
+    fun updateMenu(namaMenu: String, Jenis: String, Harga: Int, id: Int)
+
+    @Query("SELECT * FROM Menu WHERE id_menu = :Id")
+    fun getMenu(Id: Int): Menu
+
+    @Query("UPDATE Meja SET nomor_meja = :namaMeja WHERE id_meja = :id")
+    fun updateMeja(namaMeja: String, id: Int)
+
+    @Delete
+    fun deleteMeja(meja: Meja)
+
+    @Query("SELECT nomor_meja FROM Meja")
+    fun getAllNamaMeja(): List<String>
+
+    @Query("SELECT id_meja FROM Meja WHERE nomor_meja = :namaMeja")
+    fun getIdMejaFromNama(namaMeja: String): Int
+
+    @Query("SELECT id_transaksi FROM Transaksi WHERE tgl_transaksi = :tglTransaksi AND id_user = :idUser AND id_meja = :idMeja AND nama_pelanggan = :namaPelanggan AND status = :Status")
+    fun getIdTransaksiFromOther(tglTransaksi: String, idUser: Int, idMeja: Int, namaPelanggan: String, Status: String): Int
 }
