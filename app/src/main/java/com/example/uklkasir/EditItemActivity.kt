@@ -15,15 +15,24 @@ class EditItemActivity : AppCompatActivity() {
     lateinit var db: CafeDatabase
 
     var id: Int = 0
+    var nama_menu: String = ""
+    var harga_menu: Int = 0
+    var jenis: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_item)
 
         id = intent.getIntExtra("ID", 0)
+        nama_menu = intent.getStringExtra("nama_menu")!!
+        harga_menu = intent.getIntExtra("harga_menu", 0)
+        jenis = intent.getStringExtra("jenis")!!
 
         init()
         setDataSpinner()
+
+        nama
+
 
         db = CafeDatabase.getInstance(applicationContext)
 

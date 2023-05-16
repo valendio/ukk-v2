@@ -29,6 +29,8 @@ class CartActivity : AppCompatActivity() {
     lateinit var cartAdapter: CartAdapter
 
     var id_user: Int = 0
+    var addAgain: Boolean = false
+    var id_transaksi: Int = 0
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +40,8 @@ class CartActivity : AppCompatActivity() {
         db = CafeDatabase.getInstance(applicationContext)
         listCart = intent.getIntegerArrayListExtra("CART")!!
         id_user = intent.getIntExtra("id_user",0)
+        id_transaksi = intent.getIntExtra("id_transaksi",0)
+        addAgain = intent.getBooleanExtra("addAgain", false)
 
         recycler = findViewById(R.id.recyclerCart)
         checkoutButton = findViewById(R.id.checkOut)
@@ -61,6 +65,8 @@ class CartActivity : AppCompatActivity() {
         checkoutButton.setOnClickListener {
             val moveIntent = Intent(this@CartActivity, CheckOutActivity::class.java)
             moveIntent.putExtra("id_user", id_user)
+            moveIntent.putExtra("id_transaksi", id_transaksi)
+            moveIntent.putExtra("addAgain", addAgain)
             var listIdMenu = arrayListOf<Int?>()
             for(i in listMenu){
                 listIdMenu.add(i.id_menu)

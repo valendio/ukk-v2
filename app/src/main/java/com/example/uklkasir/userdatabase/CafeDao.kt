@@ -61,4 +61,19 @@ interface CafeDao {
 
     @Query("SELECT id_transaksi FROM Transaksi WHERE tgl_transaksi = :tglTransaksi AND id_user = :idUser AND id_meja = :idMeja AND nama_pelanggan = :namaPelanggan AND status = :Status")
     fun getIdTransaksiFromOther(tglTransaksi: String, idUser: Int, idMeja: Int, namaPelanggan: String, Status: String): Int
+
+    @Query("SELECT * FROM Meja WHERE id_meja = :id")
+    fun getMeja(id: Int): Meja
+
+    @Delete
+    fun deleteTransaksi(transaksi: Transaksi)
+
+    @Query("UPDATE Transaksi SET nama_pelanggan = :namaPelanggan, id_meja = :idMeja, status = :Status WHERE id_transaksi = :idTransaksi")
+    fun updateTransaksi(namaPelanggan: String, idMeja: Int, Status: String, idTransaksi: Int)
+
+    @Query("SELECT * FROM DetailTransaksi WHERE id_transaksi = :Id")
+    fun getDetailTransaksi(Id: Int): List<DetailTransaksi>
+
+    @Query("SELECT * FROM Transaksi WHERE id_transaksi = :Id")
+    fun getTransaksi(Id: Int): Transaksi
 }

@@ -13,6 +13,27 @@
         android:theme="@style/Theme.UKLKasir"
         tools:targetApi="31">
         <activity
+            android:name=".AddItemOnDetailActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".ListDetailTransaksiActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".EditTransaksiActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".ListTransaksiActivity"
             android:exported="false">
             <meta-data

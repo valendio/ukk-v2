@@ -27,6 +27,8 @@ class CheckOutActivity : AppCompatActivity() {
     var id_user: Int = 0
     var listIdMenu = arrayListOf<Int>()
     var listMenu = arrayListOf<Menu>()
+    var addAgain: Boolean = false
+    var id_transaksi: Int = 0
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,8 +41,10 @@ class CheckOutActivity : AppCompatActivity() {
         checkoutButton = findViewById(R.id.checkOut)
 
         db = CafeDatabase.getInstance(applicationContext)
-        id_user = intent.getIntExtra("id_user", 0)
+        id_user = intent.getIntExtra("id_user",0)
+        id_transaksi = intent.getIntExtra("id_transaksi",0)
         listIdMenu = intent.getIntegerArrayListExtra("list")!!
+        addAgain = intent.getBooleanExtra("addAgain",false)
 
         for (i in listIdMenu){
             var menu = db.cafeDao().getMenu(i)
@@ -50,32 +54,56 @@ class CheckOutActivity : AppCompatActivity() {
         setDataSpinner()
         var status = "Belum Bayar"
 
-        checkoutButton.setOnClickListener{
-            var formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy")
-            var current = LocalDateTime.now().format(formatter)
-            if(dibayar.isChecked){
-                status = "Dibayar"
+        if(addAgain == true){
+            namaPelanggan.text = db.cafeDao().getTransaksi(id_transaksi).nama_pelanggan
+            spinnerMeja.setSelection(db.cafeDao().getTransaksi(id_transaksi).id_meja - 1)
+            if(db.cafeDao().getTransaksi(id_transaksi).status == "Dibayar"){
+                dibayar.isChecked = true
             }
-            var newTransaksi = Transaksi(null,
-                current,
-                id_user,
-                db.cafeDao().getIdMejaFromNama(spinnerMeja.selectedItem.toString()),
-                namaPelanggan.text.toString(),
-                status)
-            db.cafeDao().insertTransaksi(newTransaksi)
-            var idtransaksi = db.cafeDao().getIdTransaksiFromOther(
-                newTransaksi.tgl_transaksi,
-                newTransaksi.id_user,
-                newTransaksi.id_meja,
-                newTransaksi.nama_pelanggan,
-                newTransaksi.status)
-            for (i in listMenu){
-                db.cafeDao().insertDetailTransaksi(DetailTransaksi(
-                    null,
-                    idtransaksi,
-                    i.id_menu!!,
-                    i.harga
-                ))
+        }
+
+        checkoutButton.setOnClickListener{
+            if(addAgain == true){
+                for (i in listMenu){
+                    db.cafeDao().insertDetailTransaksi(DetailTransaksi(
+                        null,
+                        id_transaksi,
+                        i.id_menu!!,
+                        i.harga
+                    ))
+                }
+                finish()
+                finish()
+                finish()
+            } else {
+                var formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy")
+                var current = LocalDateTime.now().format(formatter)
+                if(dibayar.isChecked){
+                    status = "Dibayar"
+                }
+                var newTransaksi = Transaksi(null,
+                    current,
+                    id_user,
+                    db.cafeDao().getIdMejaFromNama(spinnerMeja.selectedItem.toString()),
+                    namaPelanggan.text.toString(),
+                    status)
+                db.cafeDao().insertTransaksi(newTransaksi)
+                var idtransaksi = db.cafeDao().getIdTransaksiFromOther(
+                    newTransaksi.tgl_transaksi,
+                    newTransaksi.id_user,
+                    newTransaksi.id_meja,
+                    newTransaksi.nama_pelanggan,
+                    newTransaksi.status)
+                for (i in listMenu){
+                    db.cafeDao().insertDetailTransaksi(DetailTransaksi(
+                        null,
+                        idtransaksi,
+                        i.id_menu!!,
+                        i.harga
+                    ))
+                }
+                finish()
+                finish()
             }
         }
     }
