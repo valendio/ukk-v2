@@ -26,14 +26,23 @@ class LoginActivity : AppCompatActivity() {
             if(editEmail.text.toString().isNotEmpty() && editPassword.text.toString().isNotEmpty()){
                 var list: List<User> = db.cafeDao().login(editEmail.text.toString(), editPassword.text.toString())
                 if(list.size > 0){
-                    val moveIntent = Intent(this@LoginActivity, MainActivity2::class.java)
                     val name = list[0].nama
                     val role = list[0].role
                     val id_user = list[0].id_user
-                    moveIntent.putExtra("name", name)
-                    moveIntent.putExtra("role", role)
-                    moveIntent.putExtra("id_user", id_user)
-                    startActivity(moveIntent)
+                    if(role == "Manager"){
+                        val moveIntent = Intent(this@LoginActivity, ManagerActivity::class.java)
+                        moveIntent.putExtra("name", name)
+                        moveIntent.putExtra("role", role)
+                        moveIntent.putExtra("id_user", id_user)
+                        startActivity(moveIntent)
+                    }
+                    else{
+                        val moveIntent = Intent(this@LoginActivity, MainActivity2::class.java)
+                        moveIntent.putExtra("name", name)
+                        moveIntent.putExtra("role", role)
+                        moveIntent.putExtra("id_user", id_user)
+                        startActivity(moveIntent)
+                    }
                 }
                 else{
                     Toast.makeText(applicationContext, "User not found", Toast.LENGTH_SHORT).show()

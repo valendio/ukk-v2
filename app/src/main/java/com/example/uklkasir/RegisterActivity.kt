@@ -26,7 +26,7 @@ class RegisterActivity : AppCompatActivity() {
         init()
         setDataSpinner()
         buttonSave.setOnClickListener{
-            if(editName.text.toString().isNotEmpty() && editEmail.text.toString().isNotEmpty() && editPassword.text.toString().isNotEmpty()){
+            if(editName.text.toString().isNotEmpty() && editEmail.text.toString().isNotEmpty() && editPassword.text.toString().isNotEmpty() && pilihRole.selectedItem.toString() != "Pilih Role"){
                 db.cafeDao().insertUser(User(
                     null,
                     editName.text.toString(),

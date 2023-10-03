@@ -1,8 +1,10 @@
 package com.example.uklkasir
 
+import android.opengl.Visibility
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
@@ -19,7 +21,6 @@ import java.time.format.DateTimeFormatter
 class CheckOutActivity : AppCompatActivity() {
     lateinit var namaPelanggan: TextView
     lateinit var spinnerMeja: Spinner
-    lateinit var dibayar: CheckBox
     lateinit var checkoutButton: Button
 
     lateinit var db: CafeDatabase
@@ -37,7 +38,6 @@ class CheckOutActivity : AppCompatActivity() {
 
         namaPelanggan = findViewById(R.id.namaPelanggan)
         spinnerMeja = findViewById(R.id.spinnerMeja)
-        dibayar = findViewById(R.id.dibayar)
         checkoutButton = findViewById(R.id.checkOut)
 
         db = CafeDatabase.getInstance(applicationContext)
@@ -55,15 +55,14 @@ class CheckOutActivity : AppCompatActivity() {
         var status = "Belum Bayar"
 
         if(addAgain == true){
-            namaPelanggan.text = db.cafeDao().getTransaksi(id_transaksi).nama_pelanggan
-            spinnerMeja.setSelection(db.cafeDao().getTransaksi(id_transaksi).id_meja - 1)
-            if(db.cafeDao().getTransaksi(id_transaksi).status == "Dibayar"){
-                dibayar.isChecked = true
-            }
+            namaPelanggan.visibility = View.INVISIBLE
+            namaPelanggan.isEnabled = false
+            spinnerMeja.visibility = View.INVISIBLE
+            spinnerMeja.isEnabled = false
         }
 
-        checkoutButton.setOnClickListener{
-            if(addAgain == true){
+        checkoutButton.setOnClickListener {
+            if(addAgain == true) {
                 for (i in listMenu){
                     db.cafeDao().insertDetailTransaksi(DetailTransaksi(
                         null,
@@ -73,37 +72,45 @@ class CheckOutActivity : AppCompatActivity() {
                     ))
                 }
                 finish()
-                finish()
-                finish()
-            } else {
-                var formatter = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy")
-                var current = LocalDateTime.now().format(formatter)
-                if(dibayar.isChecked){
-                    status = "Dibayar"
+            }
+            else {
+                if(namaPelanggan.text.isNotEmpty() && spinnerMeja.selectedItem != null){
+                    var formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+                    val formatterWaktu = DateTimeFormatter.ofPattern("HH:mm")
+                    var current = LocalDateTime.now().format(formatter)
+                    val currentWaktu = LocalDateTime.now().format(formatterWaktu)
+                    var newTransaksi = Transaksi(null,
+                        currentWaktu,
+                        current,
+                        id_user,
+                        db.cafeDao().getIdMejaFromNama(spinnerMeja.selectedItem.toString()),
+                        namaPelanggan.text.toString(),
+                        status)
+                    db.cafeDao().insertTransaksi(newTransaksi)
+                    var idtransaksi = db.cafeDao().getIdTransaksiFromOther(
+                        newTransaksi.tgl_transaksi,
+                        newTransaksi.id_user,
+                        newTransaksi.id_meja,
+                        newTransaksi.nama_pelanggan,
+                        newTransaksi.status)
+                    var meja = db.cafeDao().getMeja(newTransaksi.id_meja)
+                    db.cafeDao().updateMeja(meja.nomor_meja, meja.id_meja!!, true)
+                    for (i in listMenu){
+                        db.cafeDao().insertDetailTransaksi(DetailTransaksi(
+                            null,
+                            idtransaksi,
+                            i.id_menu!!,
+                            i.harga
+                        ))
+                    }
+                    finish()
                 }
-                var newTransaksi = Transaksi(null,
-                    current,
-                    id_user,
-                    db.cafeDao().getIdMejaFromNama(spinnerMeja.selectedItem.toString()),
-                    namaPelanggan.text.toString(),
-                    status)
-                db.cafeDao().insertTransaksi(newTransaksi)
-                var idtransaksi = db.cafeDao().getIdTransaksiFromOther(
-                    newTransaksi.tgl_transaksi,
-                    newTransaksi.id_user,
-                    newTransaksi.id_meja,
-                    newTransaksi.nama_pelanggan,
-                    newTransaksi.status)
-                for (i in listMenu){
-                    db.cafeDao().insertDetailTransaksi(DetailTransaksi(
-                        null,
-                        idtransaksi,
-                        i.id_menu!!,
-                        i.harga
-                    ))
+                else if(namaPelanggan.text.isEmpty()) {
+                    namaPelanggan.setError("Nama harus diisi")
                 }
-                finish()
-                finish()
+                else {
+                    namaPelanggan.setError("Meja penuh")
+                }
             }
         }
     }

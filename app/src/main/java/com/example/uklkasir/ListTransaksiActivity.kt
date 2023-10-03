@@ -63,17 +63,23 @@ class ListTransaksiActivity : AppCompatActivity() {
                         ItemTouchHelper.LEFT -> {
                             var adapter: TransaksiAdapter = itemRv.adapter as TransaksiAdapter
                             db.cafeDao().deleteTransaksi(adapter.getItem(position))
+                            var listDetail = db.cafeDao().getDetailTransaksifromTransaksi(adapter.getItem(position).id_transaksi!!)
+                            for(i in 0..listDetail.size - 1) run {
+                                db.cafeDao().deleteDetailTransaksi(listDetail[i])
+                            }
                             adapter.notifyItemRemoved(position)
                             val intent = intent
                             finish()
                             startActivity(intent)
                         }
                         ItemTouchHelper.RIGHT -> {
-                            val moveIntent = Intent(this@ListTransaksiActivity, EditTransaksiActivity::class.java)
                             var adapter: TransaksiAdapter = itemRv.adapter as TransaksiAdapter
                             var transaksi = adapter.getItem(position)
-                            moveIntent.putExtra("ID", transaksi.id_transaksi)
-                            startActivity(moveIntent)
+                            if(db.cafeDao().getMeja(db.cafeDao().getTransaksi(transaksi.id_transaksi!!).id_meja).used == true){
+                                val moveIntent = Intent(this@ListTransaksiActivity, EditTransaksiActivity::class.java)
+                                moveIntent.putExtra("ID", transaksi.id_transaksi)
+                                startActivity(moveIntent)
+                            }
                         }
                     }
                 }

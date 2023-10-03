@@ -104,6 +104,7 @@ class AddItemOnDetailActivity : AppCompatActivity() {
             moveIntent.putIntegerArrayListExtra("CART", listCart)
             moveIntent.putExtra("id_transaksi", id_transaksi)
             moveIntent.putExtra("addAgain", addAgain)
+            finish()
             startActivity(moveIntent)
         }
     }

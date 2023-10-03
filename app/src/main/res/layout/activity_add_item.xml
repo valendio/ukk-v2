@@ -15,7 +15,9 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="16dp"
         android:textSize="24sp"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black"
+        android:maxLines="1"
+        android:inputType="text"/>
     <EditText
         android:id="@+id/hargaProduk"
         android:layout_width="match_parent"
@@ -25,7 +27,8 @@
         android:layout_marginTop="16dp"
         android:textSize="24sp"
         android:textColor="@color/black"
-        android:inputType="number"/>
+        android:inputType="number"
+        android:maxLines="1"/>
     <Spinner
         android:id="@+id/pilihTipe"
         android:layout_width="match_parent"

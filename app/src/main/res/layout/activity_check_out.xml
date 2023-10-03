@@ -35,14 +35,6 @@
         android:layout_marginTop="16dp"
         android:layout_marginHorizontal="16dp"
         android:background="#E8E8E8"/>
-    <CheckBox
-        android:id="@+id/dibayar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:text="Dibayar"
-        android:textSize="20sp"/>
     <Button
         android:id="@+id/checkOut"
         android:layout_width="match_parent"
