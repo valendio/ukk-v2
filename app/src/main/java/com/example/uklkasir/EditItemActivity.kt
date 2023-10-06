@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import com.example.uklkasir.userdatabase.CafeDatabase
-import com.example.uklkasir.userdatabase.Menu
 
 class EditItemActivity : AppCompatActivity() {
     lateinit var nama: EditText
@@ -21,7 +20,7 @@ class EditItemActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_edit_item)
+        setContentView(R.layout.activity_edit_menu)
 
         id = intent.getIntExtra("ID", 0)
         nama_menu = intent.getStringExtra("nama_menu")!!
